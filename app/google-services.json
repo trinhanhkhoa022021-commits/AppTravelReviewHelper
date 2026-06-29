@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "94204756346",
+    "project_id": "travelrivewhelper",
+    "storage_bucket": "travelrivewhelper.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:94204756346:android:8bf6ca703257b3fc0d96c3",
+        "android_client_info": {
+          "package_name": "com.example.apptravelreviewhelper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmBPY--rCPunKGTWAV2iJmDgK9v9v2hsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

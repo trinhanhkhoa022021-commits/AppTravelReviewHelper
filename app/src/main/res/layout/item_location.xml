@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:layout_margin="8dp"
+    android:background="#EEEEEE">
+
+    <!-- Ảnh địa điểm -->
+    <ImageView
+        android:id="@+id/imgLocation"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#CCCCCC"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp">
+
+        <!-- Tên địa điểm (ĐÂY CHÍNH LÀ ID MÀ JAVA ĐANG TÌM) -->
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên địa điểm"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"/>
+
+        <!-- Địa chỉ -->
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Đánh giá -->
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating: 4.5"
+            android:textColor="#FF9800"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+</LinearLayout>
