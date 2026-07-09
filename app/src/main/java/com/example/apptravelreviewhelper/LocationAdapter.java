@@ -1,5 +1,6 @@
 package com.example.apptravelreviewhelper;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -39,8 +42,23 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         holder.tvName.setText(location.getName());
         holder.tvAddress.setText(location.getAddress());
         holder.tvRating.setText("Rating: " + location.getRating());
+        Glide.with(context)
+                .load(location.getImageUrl())
+                .placeholder(android.R.drawable.ic_menu_gallery) // Ảnh hiển thị tạm trong lúc chờ tải
+                .into(holder.imgLocation);
+        // Sự kiện khi click vào một item địa điểm
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailActivity.class);
+            // Truyền toàn bộ thông tin của địa điểm này sang màn hình chi tiết
+            intent.putExtra("name", location.getName());
+            intent.putExtra("address", location.getAddress());
+            intent.putExtra("description", location.getDescription());
+            intent.putExtra("rating", location.getRating());
+            intent.putExtra("imageUrl", location.getImageUrl());
+            context.startActivity(intent);
+        });
 
-        // Tạm thời để trống phần load ảnh, chúng ta sẽ dùng thư viện Glide xử lý sau để tránh code bị rối lúc này
+
     }
 
     @Override

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:layout_marginBottom="10dp"
+    android:background="#F9F9F9"> <TextView
+    android:id="@+id/tvReviewerEmail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="nguyenvana@gmail.com"
+    android:textStyle="bold"
+    android:textColor="#000000"
+    android:textSize="16sp"/>
+
+    <RatingBar
+        android:id="@+id/itemRatingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:layout_marginTop="5dp"
+        android:isIndicator="true"/> <TextView
+        android:id="@+id/tvReviewComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phong cảnh ở đây rất đẹp, đồ ăn ngon!"
+        android:layout_marginTop="8dp"
+        android:textColor="#333333"
+        android:textSize="15sp"/>
+
+</LinearLayout>
