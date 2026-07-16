@@ -25,6 +25,7 @@ import java.util.Map;
 public class DetailActivity extends AppCompatActivity {
 
     private ImageView imgDetail;
+    private Button btnOpenMap;
     private TextView tvDetailName, tvDetailAddress, tvDetailRating, tvDetailDescription;
 
     // Các view cho phần Review
@@ -71,6 +72,7 @@ public class DetailActivity extends AppCompatActivity {
         btnEditReview = findViewById(R.id.btnEditReview);
         btnDeleteReview = findViewById(R.id.btnDeleteReview);
         tvMyComment = findViewById(R.id.tvMyComment);
+        btnOpenMap = findViewById(R.id.btnOpenMap);
 
         // Lấy dữ liệu locationName TỪ INTENT TRƯỚC (Rất quan trọng)
         locationName = getIntent().getStringExtra("name");
@@ -212,5 +214,28 @@ public class DetailActivity extends AppCompatActivity {
                     }
                     reviewAdapter.notifyDataSetChanged();
                 });
+        // Sự kiện bấm nút Mở bản đồ - Tìm Địa điểm du lịch nổi tiếng xung quanh
+        btnOpenMap.setOnClickListener(v -> {
+            // Lấy chính xác tên và địa chỉ của địa điểm
+            String exactLocation = locationName + ", " + tvDetailAddress.getText().toString();
+
+            // Thay đổi từ khóa tìm kiếm thành "địa điểm du lịch nổi tiếng gần..."
+            String searchQuery = "địa điểm du lịch nổi tiếng gần " + exactLocation;
+
+            // Lệnh geo:0,0?q= kết hợp với câu lệnh tìm kiếm
+            android.net.Uri gmmIntentUri = android.net.Uri.parse("geo:0,0?q=" + android.net.Uri.encode(searchQuery));
+            android.content.Intent mapIntent = new android.content.Intent(android.content.Intent.ACTION_VIEW, gmmIntentUri);
+
+            // Ép mở bằng ứng dụng Google Maps
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+            try {
+                startActivity(mapIntent);
+            } catch (android.content.ActivityNotFoundException e) {
+                // Mở bằng trình duyệt web nếu máy chưa cài app Maps
+                android.net.Uri browserUri = android.net.Uri.parse("https://www.google.com/maps/search/?api=1&query=" + android.net.Uri.encode(searchQuery));
+                startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW, browserUri));
+            }
+        });
     }
 }
