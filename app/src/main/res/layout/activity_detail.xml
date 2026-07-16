@@ -61,6 +61,17 @@
                 android:textStyle="bold"
                 android:layout_marginTop="15dp"/>
 
+            <!-- NÚT ĐẶT TOUR THÊM VÀO ĐÂY -->
+            <Button
+                android:id="@+id/btnBookTour"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#4CAF50"
+                android:text="🎟 Đặt Tour Du Lịch"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
