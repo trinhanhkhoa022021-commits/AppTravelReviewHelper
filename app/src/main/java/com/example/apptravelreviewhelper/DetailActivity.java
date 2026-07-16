@@ -1,5 +1,7 @@
 package com.example.apptravelreviewhelper;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,20 +14,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.apptravelreviewhelper.adapters.ReviewAdapter;
+import com.example.apptravelreviewhelper.models.Review;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity {
 
     private ImageView imgDetail;
-    private Button btnOpenMap;
+    private Button btnOpenMap, btnBookTour; // Đã thêm khai báo btnBookTour
     private TextView tvDetailName, tvDetailAddress, tvDetailRating, tvDetailDescription;
 
     // Các view cho phần Review
@@ -43,9 +51,9 @@ public class DetailActivity extends AppCompatActivity {
     private String currentReviewId = null; // Lưu ID của bài đánh giá (nếu có)
 
     // Khai báo cho danh sách cộng đồng
-    private androidx.recyclerview.widget.RecyclerView rvReviews;
-    private com.example.apptravelreviewhelper.adapters.ReviewAdapter reviewAdapter;
-    private java.util.List<com.example.apptravelreviewhelper.models.Review> reviewList;
+    private RecyclerView rvReviews;
+    private ReviewAdapter reviewAdapter;
+    private List<Review> reviewList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +80,9 @@ public class DetailActivity extends AppCompatActivity {
         btnEditReview = findViewById(R.id.btnEditReview);
         btnDeleteReview = findViewById(R.id.btnDeleteReview);
         tvMyComment = findViewById(R.id.tvMyComment);
+
         btnOpenMap = findViewById(R.id.btnOpenMap);
+        btnBookTour = findViewById(R.id.btnBookTour); // Ánh xạ nút đặt tour
 
         // Lấy dữ liệu locationName TỪ INTENT TRƯỚC (Rất quan trọng)
         locationName = getIntent().getStringExtra("name");
@@ -89,9 +99,9 @@ public class DetailActivity extends AppCompatActivity {
 
         // Cài đặt RecyclerView cho danh sách cộng đồng
         rvReviews = findViewById(R.id.rvReviews);
-        rvReviews.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
-        reviewList = new java.util.ArrayList<>();
-        reviewAdapter = new com.example.apptravelreviewhelper.adapters.ReviewAdapter(this, reviewList);
+        rvReviews.setLayoutManager(new LinearLayoutManager(this));
+        reviewList = new ArrayList<>();
+        reviewAdapter = new ReviewAdapter(this, reviewList);
         rvReviews.setAdapter(reviewAdapter);
 
         // Gọi hàm tải danh sách đánh giá SAU KHI đã có locationName
@@ -100,17 +110,41 @@ public class DetailActivity extends AppCompatActivity {
         // Kiểm tra xem user đã review chưa
         checkUserReview();
 
-        // Các sự kiện click
+        // Sự kiện click Đánh giá
         btnSubmitReview.setOnClickListener(v -> submitReview());
 
         btnEditReview.setOnClickListener(v -> {
-            // Mở lại form để sửa
             layoutMyReview.setVisibility(View.GONE);
             layoutWriteReview.setVisibility(View.VISIBLE);
             btnSubmitReview.setText("Cập nhật Đánh Giá");
         });
 
         btnDeleteReview.setOnClickListener(v -> deleteReview());
+
+        // Sự kiện click Mở Bản Đồ (Đã dời ra khỏi hàm loadCommunityReviews)
+        btnOpenMap.setOnClickListener(v -> {
+            String exactLocation = locationName + ", " + tvDetailAddress.getText().toString();
+            String searchQuery = "địa điểm du lịch nổi tiếng gần " + exactLocation;
+
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(searchQuery));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+            try {
+                startActivity(mapIntent);
+            } catch (android.content.ActivityNotFoundException e) {
+                Uri browserUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(searchQuery));
+                startActivity(new Intent(Intent.ACTION_VIEW, browserUri));
+            }
+        });
+
+        // Sự kiện click Đặt Tour
+        btnBookTour.setOnClickListener(v -> {
+            Intent intent = new Intent(DetailActivity.this, BookingActivity.class);
+            // Truyền tên khu du lịch sang màn hình Đặt Tour
+            intent.putExtra("LOCATION_NAME", locationName);
+            startActivity(intent);
+        });
     }
 
     private void checkUserReview() {
@@ -165,13 +199,13 @@ public class DetailActivity extends AppCompatActivity {
             db.collection("Reviews").add(review).addOnSuccessListener(docRef -> {
                 Toast.makeText(DetailActivity.this, "Đã gửi đánh giá!", Toast.LENGTH_SHORT).show();
                 checkUserReview();
-                loadCommunityReviews(); // Load lại danh sách ở dưới luôn
+                loadCommunityReviews();
             });
         } else {
             db.collection("Reviews").document(currentReviewId).update(review).addOnSuccessListener(aVoid -> {
                 Toast.makeText(DetailActivity.this, "Đã cập nhật đánh giá!", Toast.LENGTH_SHORT).show();
                 checkUserReview();
-                loadCommunityReviews(); // Load lại danh sách ở dưới luôn
+                loadCommunityReviews();
             });
         }
     }
@@ -188,24 +222,22 @@ public class DetailActivity extends AppCompatActivity {
                 layoutMyReview.setVisibility(View.GONE);
                 layoutWriteReview.setVisibility(View.VISIBLE);
 
-                loadCommunityReviews(); // Cập nhật lại danh sách ở dưới
+                loadCommunityReviews();
             });
         }
     }
 
-    // Đưa hàm này vào đúng vị trí bên TRONG class DetailActivity
     private void loadCommunityReviews() {
-        if (locationName == null) return; // Bảo vệ an toàn tránh lỗi
+        if (locationName == null) return;
 
         db.collection("Reviews")
                 .whereEqualTo("locationName", locationName)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     reviewList.clear();
-                    for (com.google.firebase.firestore.DocumentSnapshot doc : queryDocumentSnapshots) {
-                        com.example.apptravelreviewhelper.models.Review review = doc.toObject(com.example.apptravelreviewhelper.models.Review.class);
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        Review review = doc.toObject(Review.class);
 
-                        // Nếu là bài review của chính mình thì bỏ qua
                         if (currentUser != null && review.getUserEmail().equals(currentUser.getEmail())) {
                             continue;
                         }
@@ -214,28 +246,5 @@ public class DetailActivity extends AppCompatActivity {
                     }
                     reviewAdapter.notifyDataSetChanged();
                 });
-        // Sự kiện bấm nút Mở bản đồ - Tìm Địa điểm du lịch nổi tiếng xung quanh
-        btnOpenMap.setOnClickListener(v -> {
-            // Lấy chính xác tên và địa chỉ của địa điểm
-            String exactLocation = locationName + ", " + tvDetailAddress.getText().toString();
-
-            // Thay đổi từ khóa tìm kiếm thành "địa điểm du lịch nổi tiếng gần..."
-            String searchQuery = "địa điểm du lịch nổi tiếng gần " + exactLocation;
-
-            // Lệnh geo:0,0?q= kết hợp với câu lệnh tìm kiếm
-            android.net.Uri gmmIntentUri = android.net.Uri.parse("geo:0,0?q=" + android.net.Uri.encode(searchQuery));
-            android.content.Intent mapIntent = new android.content.Intent(android.content.Intent.ACTION_VIEW, gmmIntentUri);
-
-            // Ép mở bằng ứng dụng Google Maps
-            mapIntent.setPackage("com.google.android.apps.maps");
-
-            try {
-                startActivity(mapIntent);
-            } catch (android.content.ActivityNotFoundException e) {
-                // Mở bằng trình duyệt web nếu máy chưa cài app Maps
-                android.net.Uri browserUri = android.net.Uri.parse("https://www.google.com/maps/search/?api=1&query=" + android.net.Uri.encode(searchQuery));
-                startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW, browserUri));
-            }
-        });
     }
 }
