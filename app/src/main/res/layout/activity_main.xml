@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FAFAFA">
 
+    <!-- THANH TIÊU ĐỀ TRÊN CÙNG -->
+    <RelativeLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Khám phá"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <!-- DANH SÁCH ĐỊA ĐIỂM (ĐÃ CHUẨN HÓA ID LÀ recyclerView) -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewLocations"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"/>
+        android:layout_below="@id/headerLayout"
+        android:layout_above="@id/bottomNavigation"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"/>
+
+    <!-- THANH MENU DƯỚI CÙNG (BOTTOM NAVIGATION) -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="#2196F3"
+        app:itemTextColor="#2196F3"
+        app:labelVisibilityMode="labeled"
+        android:elevation="8dp"/> <!-- Dòng chú ý: app:labelVisibilityMode="labeled" -->
 
 </RelativeLayout>

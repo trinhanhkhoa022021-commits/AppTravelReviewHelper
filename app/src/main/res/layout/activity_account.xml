@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <!-- PHẦN NỘI DUNG CHÍNH (Nằm trên thanh Menu) -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNavigation"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- LỜI CHÀO NGƯỜI DÙNG -->
+            <TextView
+                android:id="@+id/tvGreeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CHÀO BẠN"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textAllCaps="true"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- 1. MỤC THÔNG TIN CÁ NHÂN (Rút gọn) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnPersonalInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="16dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="👤 Thông tin cá nhân"
+                        android:textSize="16sp"
+                        android:textColor="#000000"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="&gt;"
+                        android:textColor="#9E9E9E"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 2. LỊCH SỬ GIAO DỊCH -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnTransactionHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="24dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📜 Lịch sử giao dịch"
+                        android:textSize="16sp"
+                        android:textColor="#000000"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="&gt;"
+                        android:textColor="#9E9E9E"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 3. TRUNG TÂM TRỢ GIÚP (Dịch vụ khách hàng) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dịch vụ khách hàng"
+                android:textStyle="bold"
+                android:textColor="#555555"
+                android:layout_marginBottom="8dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="30dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🎧 Hotline hỗ trợ 24/7: 1900 6969"
+                        android:textSize="16sp"
+                        android:textColor="#4CAF50"
+                        android:textStyle="bold"
+                        android:padding="16dp"/>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0"/>
+
+                    <RelativeLayout
+                        android:id="@+id/btnHelpCancel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chính sách Hủy phòng"
+                            android:textSize="16sp"
+                            android:textColor="#333333"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="&gt;"
+                            android:textColor="#9E9E9E"
+                            android:textStyle="bold"
+                            android:textSize="18sp"/>
+                    </RelativeLayout>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0"/>
+
+                    <RelativeLayout
+                        android:id="@+id/btnHelpPayment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phương thức Thanh toán"
+                            android:textSize="16sp"
+                            android:textColor="#333333"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="&gt;"
+                            android:textColor="#9E9E9E"
+                            android:textStyle="bold"
+                            android:textSize="18sp"/>
+                    </RelativeLayout>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0"/>
+
+                    <RelativeLayout
+                        android:id="@+id/btnHelpRooms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Các loại phòng &amp; Dịch vụ"
+                            android:textSize="16sp"
+                            android:textColor="#333333"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="&gt;"
+                            android:textColor="#9E9E9E"
+                            android:textStyle="bold"
+                            android:textSize="18sp"/>
+                    </RelativeLayout>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0"/>
+
+                    <RelativeLayout
+                        android:id="@+id/btnHelpPricing"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bảng giá &amp; Ưu đãi"
+                            android:textSize="16sp"
+                            android:textColor="#333333"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="&gt;"
+                            android:textColor="#9E9E9E"
+                            android:textStyle="bold"
+                            android:textSize="18sp"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 4. NÚT ĐĂNG XUẤT -->
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:text="ĐĂNG XUẤT"
+                android:backgroundTint="#1A1A1A"
+                android:textColor="#FF5252"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="40dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- THANH MENU DƯỚI CÙNG (Cố định ở đáy) -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="#2196F3"
+        app:itemTextColor="#2196F3"
+        app:labelVisibilityMode="labeled"
+        android:elevation="8dp"/> <!-- Dòng chú ý: app:labelVisibilityMode="labeled" -->
+
+</RelativeLayout>

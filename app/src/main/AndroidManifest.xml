@@ -41,8 +41,20 @@
             android:name=".DetailActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".BookingActivity" android:exported="false" />
-        <activity android:name=".PaymentActivity" android:exported="false" />
+        <activity
+            android:name=".BookingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

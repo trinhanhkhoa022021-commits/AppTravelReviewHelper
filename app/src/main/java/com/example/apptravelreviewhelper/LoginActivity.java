@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -43,6 +44,22 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Kiểm tra xem đã có user nào đăng nhập từ trước chưa
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            // Nếu đã đăng nhập rồi -> Chuyển thẳng sang MainActivity
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class); // Nhớ đổi MainActivity thành tên màn hình chính của bạn nếu khác
+            startActivity(intent);
+
+            // Lệnh finish() cực kỳ quan trọng: Để đóng hẳn màn hình Login lại.
+            // Tránh việc user vào màn hình chính rồi ấn nút Back lại bị văng ngược ra trang Login.
+            finish();
+        }
     }
 
     private void loginUser() {
