@@ -82,6 +82,7 @@ public class DetailActivity extends AppCompatActivity {
         tvMyComment = findViewById(R.id.tvMyComment);
 
         btnBookTour = findViewById(R.id.btnBookTour); // Ánh xạ nút đặt tour
+        btnOpenMap = findViewById(R.id.btnOpenMap);
 
         // Lấy dữ liệu locationName TỪ INTENT TRƯỚC (Rất quan trọng)
         locationName = getIntent().getStringExtra("name");
@@ -95,6 +96,23 @@ public class DetailActivity extends AppCompatActivity {
         tvDetailRating.setText("Đánh giá: " + rating + " ⭐");
         tvDetailDescription.setText(description);
         Glide.with(this).load(imageUrl).placeholder(android.R.drawable.ic_menu_gallery).into(imgDetail);
+
+        // Sự kiện click Mở Bản Đồ
+        btnOpenMap.setOnClickListener(v -> {
+            String exactLocation = locationName + ", " + address;
+            String searchQuery = "địa điểm du lịch nổi tiếng gần " + exactLocation;
+
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(searchQuery));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+            try {
+                startActivity(mapIntent);
+            } catch (android.content.ActivityNotFoundException e) {
+                Uri browserUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(searchQuery));
+                startActivity(new Intent(Intent.ACTION_VIEW, browserUri));
+            }
+        });
 
         // Cài đặt RecyclerView cho danh sách cộng đồng
         rvReviews = findViewById(R.id.rvReviews);

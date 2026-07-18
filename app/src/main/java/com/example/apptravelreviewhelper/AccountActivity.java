@@ -48,6 +48,22 @@ public class AccountActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Thêm xử lý cho các mục khác (Toast tạm thời)
+        findViewById(R.id.btnTransactionHistory).setOnClickListener(v -> 
+            Toast.makeText(this, "Tính năng Lịch sử giao dịch đang phát triển", Toast.LENGTH_SHORT).show());
+        
+        findViewById(R.id.btnHelpCancel).setOnClickListener(v -> 
+            Toast.makeText(this, "Đang mở Chính sách Hủy phòng", Toast.LENGTH_SHORT).show());
+            
+        findViewById(R.id.btnHelpPayment).setOnClickListener(v -> 
+            Toast.makeText(this, "Đang mở Hướng dẫn Thanh toán", Toast.LENGTH_SHORT).show());
+            
+        findViewById(R.id.btnHelpRooms).setOnClickListener(v -> 
+            Toast.makeText(this, "Đang xem Các loại phòng & Dịch vụ", Toast.LENGTH_SHORT).show());
+            
+        findViewById(R.id.btnHelpPricing).setOnClickListener(v -> 
+            Toast.makeText(this, "Đang xem Bảng giá & Ưu đãi", Toast.LENGTH_SHORT).show());
+
         // 4. Sự kiện Đăng xuất
         btnLogout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
@@ -77,8 +93,12 @@ public class AccountActivity extends AppCompatActivity {
                 Toast.makeText(this, "Sắp ra mắt: Trang Đã lưu", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (itemId == R.id.nav_booking) {
-                Toast.makeText(this, "Sắp ra mắt: Trang Đặt chỗ", Toast.LENGTH_SHORT).show();
-                return true;
+                // Chuyển sang trang Đặt chỗ
+                Intent intent = new Intent(AccountActivity.this, BookingActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+                return false;
             } else if (itemId == R.id.nav_account) {
                 return true; // Đang ở tab này rồi, không làm gì cả
             }
