@@ -51,4 +51,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
+
 }
