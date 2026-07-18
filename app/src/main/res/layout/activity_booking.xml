@@ -1,137 +1,444 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="16dp">
+
+        <!-- Header: Back & Title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_revert"
+                app:tint="#000000" />
+
+            <TextView
+                android:id="@+id/tvHeaderTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Xác nhận đặt chỗ"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="48dp"/>
+        </LinearLayout>
+
+        <!-- Card: Chọn địa điểm (Dùng Spinner thay vì chữ cố định) -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="#F8F9FA"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="#CCCCCC"
+                    android:src="@android:drawable/ic_menu_mapmode"
+                    app:tint="#757575"
+                    android:scaleType="centerInside" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Địa điểm du lịch:"
+                        android:textColor="#757575"
+                        android:textSize="14sp" />
+
+                    <!-- Thay TextView bằng Spinner để chọn địa điểm -->
+                    <Spinner
+                        android:id="@+id/spinnerLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Section 1: Thời gian & Khách -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Thời gian &amp; Khách"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Check-in -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ngày nhận phòng (Check-in)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCheckIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@android:drawable/ic_menu_my_calendar"
+                    android:drawablePadding="8dp"
+                    android:focusable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectCheckIn"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Chọn"
+                android:textColor="#000000"
+                app:strokeColor="#CCCCCC" />
+        </LinearLayout>
+
+        <!-- Check-out -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ngày trả phòng (Check-out)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCheckOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@android:drawable/ic_menu_my_calendar"
+                    android:drawablePadding="8dp"
+                    android:focusable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectCheckOut"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Chọn"
+                android:textColor="#000000"
+                app:strokeColor="#CCCCCC" />
+        </LinearLayout>
+
+        <!-- Hiển thị số đêm (Tự động tính) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Số đêm lưu trú dự kiến:"
+                android:textColor="#757575" />
+
+            <TextView
+                android:id="@+id/tvNightCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 đêm"
+                android:textStyle="bold"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <!-- Bộ đếm: Người lớn -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Người lớn"
+                android:textColor="#000000" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMinusAdult"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="-"
+                android:textColor="#000000"
+                app:strokeColor="#CCCCCC"/>
+
+            <TextView
+                android:id="@+id/tvAdultCount"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textAlignment="center"
+                android:textColor="#000000" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPlusAdult"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="+"
+                android:textColor="#000000"
+                app:strokeColor="#CCCCCC"/>
+        </LinearLayout>
+
+        <!-- Bộ đếm: Số lượng phòng -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Số lượng phòng"
+                android:textColor="#000000" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMinusRoom"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="-"
+                android:textColor="#000000"
+                app:strokeColor="#CCCCCC"/>
+
+            <TextView
+                android:id="@+id/tvRoomCount"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textAlignment="center"
+                android:textColor="#000000" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPlusRoom"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="+"
+                android:textColor="#000000"
+                app:strokeColor="#CCCCCC"/>
+        </LinearLayout>
+
+        <!-- Section 2: Loại phòng & Yêu cầu -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Loại phòng &amp; Yêu cầu"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thông Tin Đặt Tour"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#333333"
-            android:layout_marginBottom="24dp"/>
+            android:text="Chọn loại phòng:"
+            android:layout_marginBottom="4dp"
+            android:textColor="#757575" />
 
-        <androidx.cardview.widget.CardView
+        <!-- Thay đổi TextInput thành Spinner chuẩn cho Java -->
+        <Spinner
+            android:id="@+id/spinnerRoomType"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:background="#F2F2F2" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            android:layout_marginBottom="20dp">
+            android:hint="Yêu cầu đặc biệt (Optional)">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="top|start"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Section 3: Thanh toán & Xác nhận -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
+            android:text="Thanh toán &amp; Xác nhận"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Card màu xám tóm tắt chi phí -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F2F2F2"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tóm tắt thanh toán"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Đã bao gồm thuế và phí dịch vụ"
+                android:textColor="#757575"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
                 <TextView
-                    android:id="@+id/tvBookingLocation"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Tên địa điểm"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#4CAF50"
-                    android:layout_marginBottom="16dp"/>
-                <!-- Ô Nhập Địa điểm đến -->
-                <EditText
-                    android:id="@+id/edtDestination"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:drawableStart="@android:drawable/ic_menu_mylocation"
-                    android:drawablePadding="12dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:hint="Nhập địa điểm đến"
+                    android:text="Tổng tiền:"
                     android:textColor="#000000"
                     android:textSize="16sp"
-                    android:inputType="text"
-                    android:layout_marginBottom="16dp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
+                    android:textStyle="bold" />
+                <!-- ID Tổng tiền được code Java tính toán và cập nhật vào đây -->
+                <TextView
+                    android:id="@+id/tvTotalPrice"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Ngày khởi hành"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginBottom="12dp"
-                    app:startIconDrawable="@android:drawable/ic_menu_my_calendar">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etTravelDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="date" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Số lượng khách"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginBottom="12dp"
-                    app:startIconDrawable="@android:drawable/ic_menu_slideshow">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etNumberOfPeople"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
-
+                    android:text="2.500.000 VND"
+                    android:textColor="#D32F2F"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-        <androidx.cardview.widget.CardView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phương thức thanh toán"
+            android:textColor="#333333" />
+
+        <RadioGroup
+            android:id="@+id/rgPaymentMethod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            android:layout_marginBottom="30dp">
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/rbCreditCard"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:buttonTint="#1976D2"
+                android:text="Thẻ tín dụng"
+                android:checked="true"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lưu ý"
-                    android:textStyle="bold"
-                    android:textColor="#333333"
-                    android:layout_marginBottom="8dp"/>
+            <RadioButton
+                android:id="@+id/rbMoMo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="Ví điện tử (MoMo)" />
+        </RadioGroup>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="• Quý khách vui lòng kiểm tra kỹ thông tin.\n• Sau khi nhấn tiếp tục, quý khách sẽ chọn phương thức thanh toán."
-                    android:textSize="14sp"
-                    android:textColor="#757575"
-                    android:lineSpacingExtra="4dp"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        <!-- Panel ẩn cho logic UI (giữ nguyên để không lỗi Java) -->
+        <LinearLayout
+            android:id="@+id/panelCreditCard"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/panelMoMo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:visibility="gone" />
 
-        <Button
-            android:id="@+id/btnGoToPayment"
+        <!-- Nút Xác nhận -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmBooking"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="TIẾP TỤC THANH TOÁN"
-            android:backgroundTint="#4CAF50"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="#3B78C6"
+            android:text="Xác nhận đặt chỗ"
+            android:textAllCaps="false"
             android:textSize="16sp"
-            app:cornerRadius="28dp"/>
+            app:cornerRadius="28dp" />
 
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

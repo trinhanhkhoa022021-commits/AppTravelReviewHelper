@@ -32,10 +32,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 1. Ánh xạ giao diện RecyclerView (Lưu ý: ID phải khớp với file activity_main.xml)
+        // 1. Ánh xạ giao diện RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
-        // Nếu file XML của bạn vẫn để id là recyclerViewLocations thì đổi chữ recyclerView ở trên thành recyclerViewLocations nhé.
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Khởi tạo danh sách và Adapter
@@ -69,13 +67,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Sắp ra mắt: Trang Đã lưu", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (itemId == R.id.nav_booking) {
-                Toast.makeText(MainActivity.this, "Sắp ra mắt: Trang Đặt chỗ", Toast.LENGTH_SHORT).show();
-                return true;
+
+                // ĐÃ FIX: Chuyển sang màn hình Đặt chỗ (BookingActivity)
+                Intent intent = new Intent(MainActivity.this, BookingActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return false;
 
             } else if (itemId == R.id.nav_account) {
                 // Chuyển sang màn hình Tài khoản
                 Intent intent = new Intent(MainActivity.this, AccountActivity.class);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 return false;
             }
 
