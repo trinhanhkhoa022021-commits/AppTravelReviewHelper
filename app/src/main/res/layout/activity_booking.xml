@@ -42,6 +42,21 @@
                     android:textStyle="bold"
                     android:textColor="#4CAF50"
                     android:layout_marginBottom="16dp"/>
+                <!-- Ô Nhập Địa điểm đến -->
+                <EditText
+                    android:id="@+id/edtDestination"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:drawable/editbox_background_normal"
+                    android:drawableStart="@android:drawable/ic_menu_mylocation"
+                    android:drawablePadding="12dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:hint="Nhập địa điểm đến"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:inputType="text"
+                    android:layout_marginBottom="16dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"

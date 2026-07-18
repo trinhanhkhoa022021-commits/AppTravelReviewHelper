@@ -50,17 +50,6 @@
                 android:layout_marginTop="8dp"
                 android:textSize="16sp"/>
 
-            <!-- NÚT XEM BẢN ĐỒ MỚI THÊM -->
-            <Button
-                android:id="@+id/btnOpenMap"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="📍 Mở Bản Đồ &amp; Chỉ Đường"
-                android:backgroundTint="#F44336"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:layout_marginTop="15dp"/>
-
             <!-- NÚT ĐẶT TOUR THÊM VÀO ĐÂY -->
             <Button
                 android:id="@+id/btnBookTour"

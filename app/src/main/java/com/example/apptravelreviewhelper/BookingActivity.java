@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
+import android.widget.EditText;
 
 public class BookingActivity extends AppCompatActivity {
 
@@ -26,6 +27,14 @@ public class BookingActivity extends AppCompatActivity {
         if (getIntent().hasExtra("LOCATION_NAME")) {
             currentLocation = getIntent().getStringExtra("LOCATION_NAME");
             tvBookingLocation.setText("Đang đặt tour: " + currentLocation);
+        }
+        // 1. Ánh xạ ô nhập địa điểm
+        EditText edtDestination = findViewById(R.id.edtDestination);
+
+        // 2. Lấy tên địa điểm từ trang Chi tiết truyền sang và điền sẵn vào ô
+        String locationName = getIntent().getStringExtra("LOCATION_NAME");
+        if (locationName != null) {
+            edtDestination.setText(locationName);
         }
 
         btnGoToPayment.setOnClickListener(new View.OnClickListener() {

@@ -60,8 +60,11 @@ public class MainActivity extends AppCompatActivity {
                 // Đang ở màn hình chính (Điểm Hot), không cần làm gì cả
                 return true;
             } else if (itemId == R.id.nav_search) {
-                Toast.makeText(MainActivity.this, "Sắp ra mắt: Trang Tìm kiếm", Toast.LENGTH_SHORT).show();
-                return true;
+                // Chuyển sang trang Tìm kiếm
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0); // Tắt hiệu ứng chuyển động cho mượt
+                return false;
             } else if (itemId == R.id.nav_saved) {
                 Toast.makeText(MainActivity.this, "Sắp ra mắt: Trang Đã lưu", Toast.LENGTH_SHORT).show();
                 return true;

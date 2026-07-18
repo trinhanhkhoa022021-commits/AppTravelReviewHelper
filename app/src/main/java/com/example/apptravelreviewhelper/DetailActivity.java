@@ -81,7 +81,6 @@ public class DetailActivity extends AppCompatActivity {
         btnDeleteReview = findViewById(R.id.btnDeleteReview);
         tvMyComment = findViewById(R.id.tvMyComment);
 
-        btnOpenMap = findViewById(R.id.btnOpenMap);
         btnBookTour = findViewById(R.id.btnBookTour); // Ánh xạ nút đặt tour
 
         // Lấy dữ liệu locationName TỪ INTENT TRƯỚC (Rất quan trọng)
@@ -120,23 +119,6 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         btnDeleteReview.setOnClickListener(v -> deleteReview());
-
-        // Sự kiện click Mở Bản Đồ (Đã dời ra khỏi hàm loadCommunityReviews)
-        btnOpenMap.setOnClickListener(v -> {
-            String exactLocation = locationName + ", " + tvDetailAddress.getText().toString();
-            String searchQuery = "địa điểm du lịch nổi tiếng gần " + exactLocation;
-
-            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(searchQuery));
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-            mapIntent.setPackage("com.google.android.apps.maps");
-
-            try {
-                startActivity(mapIntent);
-            } catch (android.content.ActivityNotFoundException e) {
-                Uri browserUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(searchQuery));
-                startActivity(new Intent(Intent.ACTION_VIEW, browserUri));
-            }
-        });
 
         // Sự kiện click Đặt Tour
         btnBookTour.setOnClickListener(v -> {
