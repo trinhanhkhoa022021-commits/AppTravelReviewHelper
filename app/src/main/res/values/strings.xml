@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">AppTravelReviewHelper</string>
+
+    <string name="app_name">
+        AppTravelReviewHelper
+    </string>
+
+
+    <string name="default_web_client_id">
+        94204756346-2j3itbk1el6n4j3bkk0lffnturuth13i.apps.googleusercontent.com
+    </string>
+
 </resources>

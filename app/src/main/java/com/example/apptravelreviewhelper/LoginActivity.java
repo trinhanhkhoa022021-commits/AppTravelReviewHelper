@@ -7,16 +7,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private GoogleSignInClient googleSignInClient;
+    private static final int RC_SIGN_IN = 100;
     private EditText edtEmail, edtPassword;
-    private Button btnLogin;
+    private Button btnLogin, btnGoogle;
     private TextView tvRegister;
     private FirebaseAuth mAuth;
 
@@ -25,39 +34,60 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Khởi tạo Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Ánh xạ giao diện
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        btnGoogle = findViewById(R.id.btnGoogle);
         tvRegister = findViewById(R.id.tvRegister);
-        // Dùng HTML để bôi đậm và đổi màu xanh chữ "Đăng ký ngay"
+
         tvRegister.setText(android.text.Html.fromHtml("Chưa có tài khoản? <b><font color='#2196F3'>Đăng ký ngay</font></b>", android.text.Html.FROM_HTML_MODE_LEGACY));
 
-        // Bấm nút Đăng nhập
         btnLogin.setOnClickListener(v -> loginUser());
-
-        // Bấm chữ Đăng ký
-
-        tvRegister.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-        });
+        btnGoogle.setOnClickListener(v -> startActivityForResult(googleSignInClient.getSignInIntent(), RC_SIGN_IN));
+        tvRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                Toast.makeText(this, "Đăng nhập Google thất bại", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Toast.makeText(this, "Xin chào " + (user != null ? user.getDisplayName() : "bạn"), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Google Login lỗi", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        // Kiểm tra xem đã có user nào đăng nhập từ trước chưa
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser != null) {
-            // Nếu đã đăng nhập rồi -> Chuyển thẳng sang MainActivity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class); // Nhớ đổi MainActivity thành tên màn hình chính của bạn nếu khác
-            startActivity(intent);
-
-            // Lệnh finish() cực kỳ quan trọng: Để đóng hẳn màn hình Login lại.
-            // Tránh việc user vào màn hình chính rồi ấn nút Back lại bị văng ngược ra trang Login.
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
     }
@@ -65,23 +95,17 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser() {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
-
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ Email và Mật khẩu!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng nhập đầy đủ!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Gọi hàm đăng nhập của Firebase
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Đăng nhập thành công, chuyển sang màn hình chính (MainActivity)
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish(); // Đóng màn hình đăng nhập
+                        finish();
                     } else {
-                        // Đăng nhập thất bại (sai pass hoặc tài khoản ko tồn tại)
-                        Toast.makeText(LoginActivity.this, "Lỗi: Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

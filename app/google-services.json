@@ -12,7 +12,20 @@
           "package_name": "com.example.apptravelreviewhelper"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "94204756346-turn30idgltvuie34n5n10ftluvt13g4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apptravelreviewhelper",
+            "certificate_hash": "062c2a04f91dadbcb784c7cfb5cd818f57906edb"
+          }
+        },
+        {
+          "client_id": "94204756346-2j3itbk1el6n4j3bkk0lffnturuth13i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDmBPY--rCPunKGTWAV2iJmDgK9v9v2hsY"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "94204756346-2j3itbk1el6n4j3bkk0lffnturuth13i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
