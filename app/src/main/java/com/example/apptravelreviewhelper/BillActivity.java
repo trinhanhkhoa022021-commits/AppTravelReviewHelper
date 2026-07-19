@@ -33,19 +33,36 @@ public class BillActivity extends AppCompatActivity {
         // 2. Nhận dữ liệu từ BookingActivity
         Intent intent = getIntent();
         if (intent != null) {
-            tvBillLocation.setText(intent.getStringExtra("BILL_LOCATION"));
-            tvBillCheckIn.setText(intent.getStringExtra("BILL_CHECK_IN"));
-            tvBillNights.setText(intent.getIntExtra("BILL_NIGHTS", 1) + " đêm");
-            tvBillAdults.setText(intent.getIntExtra("BILL_ADULTS", 1) + " người lớn");
-            tvBillRoomType.setText(intent.getStringExtra("BILL_ROOM_TYPE"));
-            tvBillRoomCount.setText(intent.getIntExtra("BILL_ROOM_COUNT", 1) + " phòng");
-            tvBillPaymentMethod.setText(intent.getStringExtra("BILL_PAYMENT_METHOD"));
-            tvBillTotalPrice.setText(intent.getStringExtra("BILL_TOTAL_PRICE"));
+            String location = intent.getStringExtra("BILL_LOCATION");
+            String checkIn = intent.getStringExtra("BILL_CHECK_IN");
+            int nights = intent.getIntExtra("BILL_NIGHTS", 1);
+            int adults = intent.getIntExtra("BILL_ADULTS", 1);
+            String roomType = intent.getStringExtra("BILL_ROOM_TYPE");
+            int roomCount = intent.getIntExtra("BILL_ROOM_COUNT", 1);
+            String paymentMethod = intent.getStringExtra("BILL_PAYMENT_METHOD");
+            String totalPrice = intent.getStringExtra("BILL_TOTAL_PRICE");
+
+            tvBillLocation.setText(location);
+            tvBillCheckIn.setText(checkIn);
+            tvBillNights.setText(nights + " đêm");
+            tvBillAdults.setText(adults + " người lớn");
+            tvBillRoomType.setText(roomType);
+            tvBillRoomCount.setText(roomCount + " phòng");
+            tvBillPaymentMethod.setText(paymentMethod);
+            tvBillTotalPrice.setText(totalPrice);
+
+            // ====== MỚI: Lưu bill này vào lịch sử giao dịch ======
+            Bill bill = new Bill(
+                    location, checkIn, nights, adults,
+                    roomType, roomCount, paymentMethod, totalPrice,
+                    System.currentTimeMillis()
+            );
+            BillHistoryManager.addBill(this, bill);
+            // ====== HẾT PHẦN MỚI ======
         }
 
         // 3. Xử lý nút "Về trang chủ"
         btnBackToHome.setOnClickListener(v -> {
-            // Chuyển người dùng về MainActivity và xóa hết các trang trung gian đi
             Intent homeIntent = new Intent(BillActivity.this, MainActivity.class);
             homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(homeIntent);

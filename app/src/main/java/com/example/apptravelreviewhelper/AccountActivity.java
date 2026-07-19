@@ -50,8 +50,10 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         // Thêm xử lý cho các mục khác (Toast tạm thời)
-        findViewById(R.id.btnTransactionHistory).setOnClickListener(v -> 
-            Toast.makeText(this, "Tính năng Lịch sử giao dịch đang phát triển", Toast.LENGTH_SHORT).show());
+        findViewById(R.id.btnTransactionHistory).setOnClickListener(v -> {
+            Intent intent = new Intent(AccountActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
         
         findViewById(R.id.btnHelpCancel).setOnClickListener(v -> 
             Toast.makeText(this, "Đang mở Chính sách Hủy phòng", Toast.LENGTH_SHORT).show());

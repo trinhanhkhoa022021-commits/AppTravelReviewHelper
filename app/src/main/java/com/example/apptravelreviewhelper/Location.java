@@ -1,6 +1,8 @@
 package com.example.apptravelreviewhelper;
 
 public class Location {
+    private String id;
+    private boolean isSaved;
     private String name;
     private String address;
     private String description;
@@ -9,6 +11,22 @@ public class Location {
 
     public Location(){
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(boolean saved) {
+        isSaved = saved;
     }
 
     public String getImageUrl() {
@@ -57,7 +75,6 @@ public class Location {
         this.description=description;
         this.rating=rating;
         this.imageUrl=imageUrl;
-
     }
 
 }

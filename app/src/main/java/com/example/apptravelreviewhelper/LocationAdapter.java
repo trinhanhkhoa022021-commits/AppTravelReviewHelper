@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +47,26 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
                 .load(location.getImageUrl())
                 .placeholder(android.R.drawable.ic_menu_gallery) // Ảnh hiển thị tạm trong lúc chờ tải
                 .into(holder.imgLocation);
+
+        // ====== Xử lý nút lưu (ngôi sao) ======
+        boolean isSaved = SavedLocationManager.isSaved(context, location.getId());
+        holder.ivSave.setImageResource(
+                isSaved ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off
+        );
+
+        holder.ivSave.setOnClickListener(v -> {
+            boolean nowSaved = SavedLocationManager.toggleSave(context, location.getId());
+            holder.ivSave.setImageResource(
+                    nowSaved ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off
+            );
+            Toast.makeText(
+                    context,
+                    nowSaved ? "Đã lưu địa điểm" : "Đã bỏ lưu",
+                    Toast.LENGTH_SHORT
+            ).show();
+        });
+        // ====== Hết phần xử lý nút lưu ======
+
         // Sự kiện khi click vào một item địa điểm
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
@@ -57,8 +78,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             intent.putExtra("imageUrl", location.getImageUrl());
             context.startActivity(intent);
         });
-
-
     }
 
     @Override
@@ -70,6 +89,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     public static class LocationViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvAddress, tvRating;
         ImageView imgLocation;
+        ImageView ivSave;
 
         public LocationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,6 +98,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             tvAddress = itemView.findViewById(R.id.tvAddress);
             tvRating = itemView.findViewById(R.id.tvRating);
             imgLocation = itemView.findViewById(R.id.imgLocation);
+            ivSave = itemView.findViewById(R.id.ivSave);
         }
     }
 }

@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0); // Tắt hiệu ứng chuyển động cho mượt
                 return false;
             } else if (itemId == R.id.nav_saved) {
-                Toast.makeText(MainActivity.this, "Sắp ra mắt: Trang Đã lưu", Toast.LENGTH_SHORT).show();
-                return true;
+                Intent intent = new Intent(MainActivity.this, SavedActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return false;
             } else if (itemId == R.id.nav_booking) {
 
                 // ĐÃ FIX: Chuyển sang màn hình Đặt chỗ (BookingActivity)
@@ -87,6 +89,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Cập nhật lại ngôi sao mỗi khi quay về màn hình này
+        // (để đồng bộ nếu vừa bỏ lưu ở trang "Đã lưu")
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     private void fetchLocationsFromFirebase() {
         db.collection("Locations")
                 .get()
@@ -97,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                             locationList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Location loc = document.toObject(Location.class);
+                                loc.setId(document.getId());
                                 locationList.add(loc);
                             }
                             adapter.notifyDataSetChanged();
