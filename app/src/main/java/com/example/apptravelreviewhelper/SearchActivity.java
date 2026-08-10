@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class SearchActivity extends AppCompatActivity {
     private List<Location> locationList = new ArrayList<>();
     private List<Location> filteredList = new ArrayList<>();
     private LocationAdapter adapter;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,16 +40,24 @@ public class SearchActivity extends AppCompatActivity {
         rvSearchResults = findViewById(R.id.rvSearchResults);
         edtSearchBox = findViewById(R.id.edtSearchBox);
         ImageView btnBack = findViewById(R.id.btnBack);
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
 
         // Xử lý nút quay lại
         btnBack.setOnClickListener(v -> finish());
 
         // Xử lý 2 mục gợi ý
         findViewById(R.id.itemNearby).setOnClickListener(v -> {
-            // Mở Google Maps tìm địa điểm du lịch gần đây
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=tourist+attractions+near+me"));
-            intent.setPackage("com.google.android.apps.maps");
-            try { startActivity(intent); } catch (Exception e) { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/tourist+attractions+near+me"))); }
+            // Mở Google Maps tìm địa điểm du lịch gần đây (Việt hóa từ khóa)
+            String query = "địa điểm du lịch gần đây";
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(query));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            
+            try { 
+                startActivity(mapIntent); 
+            } catch (Exception e) { 
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/" + Uri.encode(query)))); 
+            }
         });
 
         findViewById(R.id.itemFlight).setOnClickListener(v -> {
@@ -87,6 +97,49 @@ public class SearchActivity extends AppCompatActivity {
         edtSearchBox.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         if (imm != null) imm.showSoftInput(edtSearchBox, InputMethodManager.SHOW_IMPLICIT);
+
+        setupBottomNavigation();
+    }
+
+    private void setupBottomNavigation() {
+        if (bottomNavigationView == null) return;
+        bottomNavigationView.setSelectedItemId(R.id.nav_search);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_search) return true;
+
+            if (itemId == R.id.nav_hot) {
+                Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+                return false;
+            } else if (itemId == R.id.nav_saved) {
+                startActivity(new Intent(SearchActivity.this, SavedActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return false;
+            } else if (itemId == R.id.nav_booking) {
+                startActivity(new Intent(SearchActivity.this, BookingActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return false;
+            } else if (itemId == R.id.nav_account) {
+                startActivity(new Intent(SearchActivity.this, AccountActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return false;
+            }
+            return false;
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setSelectedItemId(R.id.nav_search);
+        }
     }
 
     private void fetchData() {

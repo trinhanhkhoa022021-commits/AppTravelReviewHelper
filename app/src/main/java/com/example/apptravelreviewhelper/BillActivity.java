@@ -50,15 +50,6 @@ public class BillActivity extends AppCompatActivity {
             tvBillRoomCount.setText(roomCount + " phòng");
             tvBillPaymentMethod.setText(paymentMethod);
             tvBillTotalPrice.setText(totalPrice);
-
-            // ====== MỚI: Lưu bill này vào lịch sử giao dịch ======
-            Bill bill = new Bill(
-                    location, checkIn, nights, adults,
-                    roomType, roomCount, paymentMethod, totalPrice,
-                    System.currentTimeMillis()
-            );
-            BillHistoryManager.addBill(this, bill);
-            // ====== HẾT PHẦN MỚI ======
         }
 
         // 3. Xử lý nút "Về trang chủ"

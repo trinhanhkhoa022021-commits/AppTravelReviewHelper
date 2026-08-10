@@ -48,8 +48,8 @@ public class DetailActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
-    private String locationName;
-    private String currentReviewId = null; // Lưu ID của bài đánh giá (nếu có)
+    private String locationName, imageUrl; // Thêm biến imageUrl ở cấp class
+    private String currentReviewId = null;
 
     // Khai báo cho danh sách cộng đồng
     private RecyclerView rvReviews;
@@ -90,7 +90,7 @@ public class DetailActivity extends AppCompatActivity {
         String address = getIntent().getStringExtra("address");
         String description = getIntent().getStringExtra("description");
         double rating = getIntent().getDoubleExtra("rating", 0.0);
-        String imageUrl = getIntent().getStringExtra("imageUrl");
+        imageUrl = getIntent().getStringExtra("imageUrl"); // Gán vào biến class
 
         tvDetailName.setText(locationName);
         tvDetailAddress.setText(address);
@@ -142,8 +142,9 @@ public class DetailActivity extends AppCompatActivity {
         // Sự kiện click Đặt Tour
         btnBookTour.setOnClickListener(v -> {
             Intent intent = new Intent(DetailActivity.this, BookingActivity.class);
-            // Truyền tên khu du lịch sang màn hình Đặt Tour
+            // Truyền tên khu du lịch và HÌNH ẢNH sang màn hình Đặt Tour
             intent.putExtra("LOCATION_NAME", locationName);
+            intent.putExtra("IMAGE_URL", imageUrl);
             startActivity(intent);
         });
     }

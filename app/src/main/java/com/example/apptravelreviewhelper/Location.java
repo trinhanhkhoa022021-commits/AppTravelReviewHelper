@@ -1,5 +1,7 @@
 package com.example.apptravelreviewhelper;
 
+import com.google.firebase.firestore.PropertyName;
+
 public class Location {
     private String id;
     private boolean isSaved;
@@ -10,7 +12,7 @@ public class Location {
     private String imageUrl;
 
     public Location(){
-
+        // Constructor rỗng bắt buộc phải có cho Firestore
     }
 
     public String getId() {
@@ -53,10 +55,13 @@ public class Location {
         this.description = description;
     }
 
+    // Map chuẩn xác với chữ "adderss" bị gõ sai chính tả trên Firebase Console
+    @PropertyName("adderss")
     public String getAddress() {
         return address;
     }
 
+    @PropertyName("adderss")
     public void setAddress(String address) {
         this.address = address;
     }
@@ -70,11 +75,10 @@ public class Location {
     }
 
     public Location(String name, String address, String description, double rating, String imageUrl){
-        this.name=name;
-        this.address=address;
-        this.description=description;
-        this.rating=rating;
-        this.imageUrl=imageUrl;
+        this.name = name;
+        this.address = address;
+        this.description = description;
+        this.rating = rating;
+        this.imageUrl = imageUrl;
     }
-
 }

@@ -83,27 +83,31 @@ public class AccountActivity extends AppCompatActivity {
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_hot) {
-                // Quay về trang Điểm Hot (MainActivity)
                 Intent intent = new Intent(AccountActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                finish(); // Đóng trang Tài khoản lại
-                return false;
+                finish();
+                return true;
             } else if (itemId == R.id.nav_search) {
-                Toast.makeText(this, "Sắp ra mắt: Trang Tìm kiếm", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AccountActivity.this, SearchActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
                 return true;
             } else if (itemId == R.id.nav_saved) {
-                Toast.makeText(this, "Sắp ra mắt: Trang Đã lưu", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AccountActivity.this, SavedActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
                 return true;
             } else if (itemId == R.id.nav_booking) {
-                // Chuyển sang trang Đặt chỗ
                 Intent intent = new Intent(AccountActivity.this, BookingActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
-                return false;
+                return true;
             } else if (itemId == R.id.nav_account) {
-                return true; // Đang ở tab này rồi, không làm gì cả
+                return true;
             }
             return false;
         });

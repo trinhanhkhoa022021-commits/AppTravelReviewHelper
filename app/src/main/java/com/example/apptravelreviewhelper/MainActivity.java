@@ -56,13 +56,11 @@ public class MainActivity extends AppCompatActivity {
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_hot) {
-                // Đang ở màn hình chính (Điểm Hot), không cần làm gì cả
                 return true;
             } else if (itemId == R.id.nav_search) {
-                // Chuyển sang trang Tìm kiếm
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
-                overridePendingTransition(0, 0); // Tắt hiệu ứng chuyển động cho mượt
+                overridePendingTransition(0, 0);
                 return false;
             } else if (itemId == R.id.nav_saved) {
                 Intent intent = new Intent(MainActivity.this, SavedActivity.class);
@@ -70,15 +68,11 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 return false;
             } else if (itemId == R.id.nav_booking) {
-
-                // ĐÃ FIX: Chuyển sang màn hình Đặt chỗ (BookingActivity)
                 Intent intent = new Intent(MainActivity.this, BookingActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 return false;
-
             } else if (itemId == R.id.nav_account) {
-                // Chuyển sang màn hình Tài khoản
                 Intent intent = new Intent(MainActivity.this, AccountActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -92,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Cập nhật lại ngôi sao mỗi khi quay về màn hình này
-        // (để đồng bộ nếu vừa bỏ lưu ở trang "Đã lưu")
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
@@ -102,20 +94,33 @@ public class MainActivity extends AppCompatActivity {
     private void fetchLocationsFromFirebase() {
         db.collection("Locations")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            locationList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Location loc = document.toObject(Location.class);
-                                loc.setId(document.getId());
-                                locationList.add(loc);
-                            }
-                            adapter.notifyDataSetChanged();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        locationList.clear();
+                        if (task.getResult().isEmpty()) {
+                            Log.d("MainActivity", "Collection 'Locations' is empty.");
+                            Toast.makeText(MainActivity.this, "Không có địa điểm nào để hiển thị.", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(MainActivity.this, "Lỗi lấy dữ liệu!", Toast.LENGTH_SHORT).show();
-                            Log.w("MainActivity", "Lỗi:", task.getException());
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                try {
+                                    Location loc = document.toObject(Location.class);
+                                    loc.setId(document.getId());
+                                    locationList.add(loc);
+                                    Log.d("MainActivity", "Loaded location: " + loc.getName());
+                                } catch (Exception e) {
+                                    Log.e("MainActivity", "Error mapping document " + document.getId() + ": " + e.getMessage());
+                                }
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        String errorMsg = (task.getException() != null) ? task.getException().getMessage() : "Unknown error";
+                        Log.e("MainActivity", "Firestore Fetch Error: " + errorMsg);
+                        
+                        if (errorMsg.contains("PERMISSION_DENIED")) {
+                            Toast.makeText(MainActivity.this, "Lỗi: Chưa cấu hình quyền truy cập Firestore (Rules)!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Lỗi lấy dữ liệu: " + errorMsg, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
